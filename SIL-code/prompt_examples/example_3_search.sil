@@ -1,0 +1,104 @@
+// This script will create a report based on a specific example set of automated 'support' emails.
+// E.g.,
+//
+// "support.mbox": 17 messages 17 new
+//  N  1 robot@example.com     Mon May 11 22:26  28/1369  "Alert: new issue 123"
+//  N  2 robot@example.com     Tue May 12 12:20  22/933   "Notification: service change"
+//  N  3 robot@example.com     Tue May 12 12:36  26/1341  "Alert: new issue 124"
+//  N  4 robot@example.com     Wed May 13 02:13  21/921   "Resolution: issue 124"
+//  N  5 person@example.com    Wed May 13 18:53  26/1332  "Email not from robot."
+//  N  6 robot@example.com     Thu May 14 03:13  27/1339  "Alert: new issue 125"
+//  N  7 robot@example.com     Thu May 14 08:46  26/1270  "Resolution: issue 123"
+//  N  8 robot@example.com     Thu May 14 17:06  25/1249  "Alert: new issue 126"
+//  N  9 robot@example.com     Fri May 15 09:46  24/1185  "Resolution: issue 126"
+//  N 10 robot@example.com     Fri May 15 12:33  23/1052  "Alert: new issue 127"
+//  N 11 robot@example.com     Fri May 15 15:20  27/1331  "Notification: service change"
+//  N 12 robot@example.com     Fri May 15 18:06  23/953   "Resolution: issue 127"
+//  N 13 robot@example.com     Mon May 18 12:46  27/1218  "Alert: new issue 128"
+//  N 14 robot@example.com     Mon May 18 15:33  32/1628  "Alert: new issue 129"
+//  N 15 robot@example.com     Tue May 19 05:26  25/1176  "Resolution: issue 128"
+//  N 16 robot@example.com     Tue May 19 08:13  26/1312  "Notification: service change"
+//  N 17 robot@example.com     Tue May 19 11:00  28/1275  "Alert: new issue 130"
+//
+//
+// Each of these automated emails are from `robot` _except_ for message 5.  Messages 2, 8 and 16 are
+// from `robot` but are unrelated to issues.
+//
+// This script will search for emails and match new issue numbers with resolutions to report the
+// number of outstanding alerts.
+
+import imap
+import * from imap.query
+import imap_config
+
+import dates
+import string
+
+// Get the configuration from the environment and command line.
+config = imap_config.getConfig(commandLineArguments)
+
+// Connect to the inbox.
+creds = imap.ImapLogin(config.user, config.pass)
+server = imap.ImapServer(config.host, config.port)
+session =
+  imap.Session(server, creds)
+    |> imap.openConnection()
+    |> imap.login()
+inbox = imap.Mailbox(session, "support")
+
+// Select the default inbox.
+inbox |> imap.examine(session, _)
+
+// These criteria are common for both our searches.
+commonCrit = imap.Query()
+    |> and(from(`robot@example.com`))
+    |> and(sentSince(dates.Date(2020, 5, 13)))
+
+// Get each of the alerts and resolutions from the past week (13-19 May 2020).
+alertMsgIds =
+  imap.search(session, imap.Query(subject("Alert: new issue")) |> and(commonCrit)).ids
+resolutionMsgIds =
+  imap.search(session, imap.Query(subject("Resolution: issue")) |> and(commonCrit)).ids
+
+// A function to get the alert ID from a message subject.
+getAlertId(msgId) => {
+  imap.fetchFields(session, toString(msgId), "subject").lines[0]
+    |> string.split()[$ - 1]
+}
+
+// A function to remove an entry from a table whether it's there or not.
+removeIfExists(tbl, key) => {
+  if find(keys(tbl), key) == [] then
+    tbl
+  else
+    removeEntry(tbl, key)
+}
+
+// Now find those alerts which have no resolution.  Firstly the subject for each alert, get the
+// issue number end and store it in a table.
+allAlertTable = alertMsgIds |> fold((tbl, msgId) => addEntry(tbl, getAlertId(msgId), msgId), {})
+
+// Go through the resolutions and remove their corresponding alerts from the table.
+unresolvedAlertTable =
+  resolutionMsgIds |> fold((tbl, msgId) => removeIfExists(tbl, getAlertId(msgId)), allAlertTable)
+
+// Create a report with the date of the unresolved alerts.
+report =
+  keys(unresolvedAlertTable)
+    |> map(alertId => {
+         msgId = unresolvedAlertTable[alertId] |> toString
+       in [ alertId
+          , imap.fetchFields(session, msgId, "date").lines[0]
+          , imap.fetchText(session, msgId).lines[0]
+          ]
+       })
+    |> fold((outStr, tuple) => {
+         outStr ~ "Issue: " ~ tuple[0] ~ "\n  " ~ tuple[1] ~ "\n  Summary: " ~ tuple[2] ~ "\n"
+       }, "\nUNRESOLVED ISSUES FROM THE PAST 10 DAYS:\n\n")
+
+// Close the session.
+imap.closeConnection(session)
+
+// Print the report last.
+print(report)
+
