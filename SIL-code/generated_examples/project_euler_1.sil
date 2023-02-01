@@ -1,0 +1,10 @@
+// Here, my prompt was to solve the (easy) first problem of the Project Euler series (https://projecteuler.net/problem=1)
+
+result = 0
+for i in 1...1000 {
+    if (i % 3 == 0 || i % 5 == 0) {
+        result += i
+    }
+}
+print(result)
+

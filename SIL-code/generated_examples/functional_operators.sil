@@ -1,0 +1,40 @@
+// map
+
+map(fn, list) => {
+    result = []
+    for i in list {
+        result.append(fn(i))
+    }
+    return result
+}
+
+// filter
+
+filter(fn, list) => {
+    result = []
+    for i in list {
+        if (fn(i)) {
+            result.append(i)
+        }
+    }
+    return result
+}
+
+// reduce
+
+reduce(fn, list, initial) => {
+    result = initial
+    for i in list {
+        result = fn(result, i)
+    }
+    return result
+}
+
+// reduce (prompted to use functional operators such as pipe |>, in addition to the 'map' and 'filter' functions defined previously)
+
+reduce(fn, list, initial) => 
+    list |> 
+    filter(fn, _, initial) => 
+    map(fn, _, initial) => 
+    initial
+

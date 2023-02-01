@@ -1,0 +1,18 @@
+import math
+
+// Function to compute the median of a list of integers
+median(numbers) => {
+    // Sort the list of numbers
+    sortedNumbers = sort(numbers)
+
+    // Get the middle index of the sorted list
+    middleIndex = math.floor(len(sortedNumbers) / 2)
+
+    // If the list has an odd number of elements, return the middle element
+    if len(sortedNumbers) % 2 == 1:
+        return sortedNumbers[middleIndex]
+    // Otherwise, return the average of the two middle elements
+    else:
+        return (sortedNumbers[middleIndex - 1] + sortedNumbers[middleIndex]) / 2
+}
+
