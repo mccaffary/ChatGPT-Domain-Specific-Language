@@ -1,5 +1,6 @@
 // This prompt is to solve the second Project Euler problem (https://projecteuler.net/problem=2)
 // The solution proposed by ChatGPT is sensible, but potentially inefficient
+// Notably, despite if/else statements featuring in the code prompts used for training, ChatGPT gets the syntax wrong here
 
 result = 0
 
