@@ -1,4 +1,5 @@
 // Here, my prompt was to solve the (easy) first problem of the Project Euler series (https://projecteuler.net/problem=1)
+// Notably, despite if/else statements featuring in the code prompts used for training, ChatGPT gets the syntax wrong here
 
 result = 0
 for i in 1...1000 {
