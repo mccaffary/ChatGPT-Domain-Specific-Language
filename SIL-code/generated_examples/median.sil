@@ -1,3 +1,5 @@
+// Notably, despite if/else statements featuring in the code prompts used for training, ChatGPT gets the syntax wrong here
+
 import math
 
 // Function to compute the median of a list of integers
