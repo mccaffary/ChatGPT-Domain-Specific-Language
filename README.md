@@ -10,7 +10,7 @@ In this prompt-engineering repository, the programming abilities of ChatGPT are 
 
 ![](images/programming_language_expressiveness.png)
 
-> Various taxonomies exist for programming languages, and large language models can program flexibly across many well-known languages.
+> Various taxonomies exist for programming languages, and large language models can program flexibly across many well-known languages. This repo examines the extent to which ChatGPT can infer the rules of a novel programming language in a few-shot manner.
 
 ## Prompt-engineering
 
