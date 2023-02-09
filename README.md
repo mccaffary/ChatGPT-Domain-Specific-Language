@@ -1,14 +1,12 @@
 # Investigating the programming abilities of ChatGPT with an abitrary DSL
 
-intro intro intro
+## Large language models, domain-specific languages, and ChatGPT
+
+jshgkjhadjkhda
 
 ![](images/programming_language_expressiveness.png)
 
 > figure caption
-
-## Domain-specific languages and ChatGPT
-
-jshgkjhadjkhda
 
 ## Prompt-engineering
 
