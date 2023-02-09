@@ -6,8 +6,6 @@ Large language models (LLMs) such as [ChatGPT](https://openai.com/blog/chatgpt/)
 
 In this prompt-engineering repository, the programming abilities of ChatGPT are explored using an arbitrary domain-specific language (DSL). DSLs represent an attractive substrate for studying the inference capabilities of LLMs because they are novel and less likely to have been extensively encountered and memorised during training[^1].
 
-
-
 [^1]: There is [evidence](https://arxiv.org/abs/2202.07646) that LLM memorisation is promoted by the frequency of training example presentation and the number of relevant tokens used to prompt the model.
 
 ![](images/programming_language_expressiveness.png)
