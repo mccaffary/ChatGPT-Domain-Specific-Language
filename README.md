@@ -15,7 +15,31 @@ Here, the domain-specific language SIL (Symmetry Integration Language) was selec
 Below is a collection of prompts consisting of short examples of SIL code which highlight its functionality. After prompting ChatGPT with the task and providing SIL code samples (see figure below; [full prompt history](https://github.com/mccaffary/ChatGPT-Domain-Specific-Language/blob/main/prompt_library/full_prompt_history.txt) and [SIL code examples](https://github.com/mccaffary/ChatGPT-Domain-Specific-Language/tree/main/images/prompts_) are also in this repo), I asked it to implement a number of standard tasks in SIL.
 
 <details>
-<summary>Finding similar companies</summary>
+<summary>Prompt 1 (example SIL code)</summary>
+<br>
+
+- Many ways of doing this; for first product itertion, can use simply similarity metric for company information
+  
+- Collaborative filtering is a good first-pass for this, and an influential recent [paper](https://arxiv.org/abs/1802.05814) shows that VAEs (which I use in my modelling) outperform classic approaches at collaborative filtering (see notebook)
+
+- Ultimately, could leverage word embeddings/ word-to-vec models, such as those used in my [research](https://snap.stanford.edu/node2vec/)
+  
+</details>
+
+<details>
+<summary>Prompt 2 (example SIL code)</summary>
+<br>
+
+```ruby
+require 'redcarpet'
+markdown = Redcarpet.new("Hello World!")
+puts markdown.to_html
+```
+  
+</details>
+
+<details>
+<summary>Prompt 3 (example SIL code)</summary>
 <br>
 
 - Many ways of doing this; for first product itertion, can use simply similarity metric for company information
@@ -42,10 +66,59 @@ puts markdown.to_html
 <summary>Finding similar companies</summary>
 <br>
 
-- Many ways of doing this; for first product itertion, can use simply similarity metric for company information
-  
-- Collaborative filtering is a good first-pass for this, and an influential recent [paper](https://arxiv.org/abs/1802.05814) shows that VAEs (which I use in my modelling) outperform classic approaches at collaborative filtering (see notebook)
-
-- Ultimately, could leverage word embeddings/ word-to-vec models, such as those used in my [research](https://snap.stanford.edu/node2vec/)
+```ruby
+require 'redcarpet'
+markdown = Redcarpet.new("Hello World!")
+puts markdown.to_html
+```
   
 </details>
+
+<details>
+<summary>Finding similar companies</summary>
+<br>
+
+```ruby
+require 'redcarpet'
+markdown = Redcarpet.new("Hello World!")
+puts markdown.to_html
+```
+  
+</details>
+
+<details>
+<summary>Finding similar companies</summary>
+<br>
+
+```ruby
+require 'redcarpet'
+markdown = Redcarpet.new("Hello World!")
+puts markdown.to_html
+```
+  
+</details>
+
+<details>
+<summary>Finding similar companies</summary>
+<br>
+
+```ruby
+require 'redcarpet'
+markdown = Redcarpet.new("Hello World!")
+puts markdown.to_html
+```
+  
+</details>
+
+<details>
+<summary>Finding similar companies</summary>
+<br>
+
+```ruby
+require 'redcarpet'
+markdown = Redcarpet.new("Hello World!")
+puts markdown.to_html
+```
+  
+</details>
+
