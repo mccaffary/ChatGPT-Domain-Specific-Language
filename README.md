@@ -12,7 +12,7 @@ Here, the domain-specific language SIL (Symmetry Integration Language) was selec
 
 ## Prompt-engineering
 
-below is a collection of xyz
+Below is a collection of prompts consisting of short examples of SIL code which highlight its functionality. After prompting ChatGPT with the task and providing SIL code samples (*see figure below*), I asked it to implement a number of standard tasks in SIL.
 
 <details>
 <summary>Finding similar companies</summary>
