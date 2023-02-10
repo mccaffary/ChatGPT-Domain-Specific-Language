@@ -30,11 +30,11 @@ Below is a collection of prompts consisting of short examples of SIL code which 
 <summary>Finding similar companies</summary>
 <br>
 
-- Many ways of doing this; for first product itertion, can use simply similarity metric for company information
-  
-- Collaborative filtering is a good first-pass for this, and an influential recent [paper](https://arxiv.org/abs/1802.05814) shows that VAEs (which I use in my modelling) outperform classic approaches at collaborative filtering (see notebook)
-
-- Ultimately, could leverage word embeddings/ word-to-vec models, such as those used in my [research](https://snap.stanford.edu/node2vec/)
+```ruby
+require 'redcarpet'
+markdown = Redcarpet.new("Hello World!")
+puts markdown.to_html
+```
   
 </details>
 
