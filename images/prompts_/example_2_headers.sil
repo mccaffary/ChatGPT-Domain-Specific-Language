@@ -1,0 +1,62 @@
+import imap
+import imap_config
+import string
+
+// Get the configuration from the environment and command line.
+config = imap_config.getConfig(commandLineArguments)
+
+// -------------------------------------------------------------------------------------------------
+// Some helper functions.
+//
+// Firstly, a function to join an array of strings.
+
+joinFields(flds, sep) => {
+  len(flds) > 0 |> enforce("Cannot join an empty array.")
+  in fold(flds[1:$], (str, fld) => str ~ sep ~ fld, flds[0])
+}
+
+// Secondly, a field formatter which strips the field prefix and pads to a fixed width.
+// E.g., ("From: me@here.com" |> fmtField(20)) == "me@here.com         "
+
+fmtField(field, width) => {
+  pad(str) => iota(width - len(str)) |> fold((a, i) => a ~ " ", str)
+  in field
+    |> string.split(": ")[1:$]
+    |> joinFields(": ")
+    |> pad
+}
+
+// And thirdly, a function which concatenates the headers into a formatted string.
+
+fmtHeaders(outStr, headers) => {
+  outStr ~ "  " ~ joinFields(headers, " | ") ~ "\n"
+}
+
+// -------------------------------------------------------------------------------------------------
+
+// Connect to the inbox.
+creds = imap.ImapLogin(config.user, config.pass)
+server = imap.ImapServer(config.host, config.port)
+session =
+  imap.Session(server, creds)
+  |> imap.openConnection()
+  |> imap.login()
+inbox = imap.Mailbox(session, "INBOX")
+
+// Get the number of messages in the inbox.
+msgCount = imap.status(session, inbox).messages
+
+// Select the default inbox.
+inbox |> imap.examine(session, _)
+
+// Get the headers (date, from and subject) for each message, from oldest to newest, format and
+// print them.
+headers =
+  iota(msgCount)
+    |> map(id => "#" ~ toString(id + 1))
+    |> map(id =>
+         imap.fetchFields(session, id, "date from subject").lines
+           |> map(hdr => fmtField(hdr, 40)))
+    |> fold(fmtHeaders, "INBOX:\n")
+print(headers)
+
