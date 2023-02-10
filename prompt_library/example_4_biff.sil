@@ -1,0 +1,23 @@
+import imap
+import imap_config
+
+// Get the configuration from the environment and command line.
+config = imap_config.getConfig(commandLineArguments)
+
+// Connect to the inbox.
+creds = imap.ImapLogin(config.user, config.pass)
+server = imap.ImapServer(config.host, config.port)
+session =
+  imap.Session(server, creds)
+  |> imap.openConnection()
+  |> imap.login()
+
+// Get the status for the inbox.
+stat = (imap.Mailbox(session, "INBOX") |> imap.status(session, _))
+
+// Close the session.
+imap.closeConnection(session)
+
+// Count new messages and all messages.
+print("INBOX: " ~ toString(stat.unseen) ~ " new, " ~ toString(stat.messages) ~ " total.")
+

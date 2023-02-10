@@ -1,0 +1,28 @@
+import imap
+import imap_config
+
+config = imap_config.getConfig(commandLineArguments)
+
+// Connect to the inbox.
+creds = imap.ImapLogin(config.user, config.pass)
+server = imap.ImapServer(config.host, config.port)
+session =
+  imap.Session(server, creds)
+  |> imap.openConnection()
+  |> imap.login()
+
+// Get a list of all the mailboxes.
+list = imap.list(session)
+
+// Close the session.
+imap.closeConnection(session)
+
+// Print the mailboxes, each on a line marking those with children with a '+'.
+list.entries
+  |> fold((str, entry) => {
+       flag = if canFind(entry.attributes, 4) then "  + " else "    "
+       in str ~ flag ~ entry.path ~ "\n"
+     },
+     "Mailboxes:\n")
+  |> print
+
