@@ -10,7 +10,7 @@ Here, the domain-specific language SIL (Symmetry Integration Language) was selec
 
   
 ![](images/chatgpt_dsl_header_figure.png)
-> After some example code prompts, ChatGPT attempts to write code in a novel, functional DSL.
+> After some example code prompts, ChatGPT attempts to write code in a novel, functional DSL known as 'SIL'.
 
 [^1]: There is [evidence](https://arxiv.org/abs/2202.07646) that LLM memorisation is promoted by the frequency of training example presentation and the number of relevant tokens used to prompt the model.
 
