@@ -66,7 +66,7 @@ puts markdown.to_html
 <summary>Prompt task 2: Implement bubblsort</summary>
 <br>
 
-Implementing sorting algorithms is an archetypal software engineering interview question. Here, I asked ChatGPT to implement bubblesort (conceptually the most basic sorting algorithm) in SIL. Below is the response:
+Implementing sorting algorithms is an archetypal software engineering interview question. Here, I asked ChatGPT to implement [bubblesort](https://en.wikipedia.org/wiki/Bubble_sort) (conceptually the most basic sorting algorithm) in SIL. Below is the response:
 
 ```haskell
 bubbleSort(arr) => {
@@ -85,6 +85,7 @@ bubbleSort(arr) => {
 arr = [4, 6, 1, 3, 5, 2]
 print(bubbleSort(arr))
 ```
+Although this script is, indeed, a working implementation of bubblesort, the model broadly ignores the *functional* aspects of SIL. For instance, this implementation of bubblesort using `for` loops instead of recursion.
   
 </details>
 
