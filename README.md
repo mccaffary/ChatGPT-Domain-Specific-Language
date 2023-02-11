@@ -56,7 +56,7 @@ puts markdown.to_html
   
 As a first exercise, I asked the model to implement a very simple relational database in SIL, with basic functionalities such as comparing and printing the difference between two data structure (note that `//` denotes commenting in SIL).
 
-```haskell
+```viper
 // Here, ChatGPT was prompted to write a a very simple, schematic relational database in SIL
 // This prompt proved too general, perhaps, and after requesting further information, I prompted the model to generate a simple, schematic database with functionalities such as "compare" and "diff" for two or more tables
 
