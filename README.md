@@ -224,7 +224,7 @@ print(result)
 ```d
 // Project Euler problem #2:
 // This prompt is to solve the second Project Euler problem (https://projecteuler.net/problem=2)
-// The solution proposed by ChatGPT is sensible, but potentially inefficient
+// The solution proposed by ChatGPT is sensible, but potentially inefficient, and ignores the recursion of functional languages
 // Notably, despite if/else statements featuring in the code prompts used for training, ChatGPT gets the syntax wrong here
 
 result = 0
@@ -252,3 +252,12 @@ print(result)
   
 </details>
 
+## High-level summary
+
+Exploring the ability of LLMs to infer and understand the features of a novel programming language in a *few-shot* manner remains an open and interesting question. Here, these capacities were explored in the context of prompting ChatGPT to solve prompted problems in a novel domain-specific language (DSL) called SIL. DSLs are a potentially useful test case for exploring *inference* vs *memorisation* in LLMs, as they often have distinctive features and are less likely to have been extensively encountered during training (if at all).
+  
+Overall, the performance was mixed: ChatGPT correctly understood that this DSL is a functional programming language (although it sometimes had to be re-prompted of this), and implemented its solutions accordingly. However, it broadly failed to capture the syntactic rules of this DSL from the five example scripts provided. Further investigations (such as using other DSLs, developing some more formal metric for evaluating the LLM-generated code, or quantifying the learning dynamics of the model) would make for an intriguing extension of this repo. Finally, in a separate ChatGPT session, I provided this meta-prompt to determine how the model interpreted its own SIL code:
+  
+![](images/chatgpt_dsl_meta_prompt.png)
+> ChatGPT examines its own attempt to write code in the domain-specific language SIL, and describes some of its features.
+  
