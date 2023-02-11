@@ -12,7 +12,7 @@ Here, the domain-specific language SIL (Symmetry Integration Language) was selec
 
 ## Prompt-engineering
 
-Below is a collection of prompts consisting of short examples of SIL code which highlight its functionality. After prompting ChatGPT with the task and providing SIL code samples (see figure below; [full prompt history](https://github.com/mccaffary/ChatGPT-Domain-Specific-Language/blob/main/prompt_library/full_prompt_history.txt) and [SIL code examples](https://github.com/mccaffary/ChatGPT-Domain-Specific-Language/tree/main/images/prompts_) are also in this repo), I asked it to implement a number of standard tasks in SIL.
+Below is a collection of prompts consisting of short examples of SIL code which highlight its functionality. After prompting ChatGPT with the task and providing SIL code samples (see figure below; [full prompt history](https://github.com/mccaffary/ChatGPT-Domain-Specific-Language/blob/main/prompt_library/full_prompt_history.txt) and [SIL code examples](https://github.com/mccaffary/ChatGPT-Domain-Specific-Language/tree/main/images/prompts_) are also in this repo), I asked it to implement a number of mainstream programing tasks in SIL.
 
 <details>
 <summary>Prompt 1 (example SIL code)</summary>
@@ -66,10 +66,24 @@ puts markdown.to_html
 <summary>Prompt task 2: Implement bubblsort</summary>
 <br>
 
-```ruby
-require 'redcarpet'
-markdown = Redcarpet.new("Hello World!")
-puts markdown.to_html
+Implementing sorting algorithms is an archetypal software engineering interview question. Here, I asked ChatGPT to implement bubblesort (conceptually the most basic sorting algorithm) in SIL. Below is the response:
+
+```haskell
+bubbleSort(arr) => {
+    for i in 1...len(arr) {
+        for j in 1...len(arr) - i {
+            if (arr[j] > arr[j+1]) {
+                temp = arr[j]
+                arr[j] = arr[j+1]
+                arr[j+1] = temp
+            }
+        }
+    }
+    arr
+}
+
+arr = [4, 6, 1, 3, 5, 2]
+print(bubbleSort(arr))
 ```
   
 </details>
@@ -87,7 +101,7 @@ puts markdown.to_html
 </details>
 
 <details>
-<summary>Prompt task 4: Implement the *k*-nearest neighbours algorithm</summary>
+<summary>Prompt task 4: Implement the k-nearest neighbours algorithm</summary>
 <br>
 
 ```ruby
