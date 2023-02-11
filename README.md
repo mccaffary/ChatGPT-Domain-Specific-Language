@@ -205,6 +205,8 @@ k_nearest_neighbors(data, point, k) => {
 <summary>Prompt task 5: Solving Project Euler problems in SIL</summary>
 <br>
 
+[Project Euler](https://projecteuler.net/) is a collection of mathematical and programming problems (which I think make [interesting prompts](https://github.com/mccaffary/ChatGPT-Project-Euler) for LLMs). Here, I prompt ChatGPT to solve the first two Project Euler problems using SIL. At this point, ChatGPT's repsonses dteriorated somewhat; neither of these solutions bears much resemblance to either the high-level functionality of SIL nor its exaxct syntax. It might be interesting to provide further SIL code examples at this point and then re-prompt the model to solve these problems.
+
 ```d
 // Project Euler problem #1:
 // Here, my prompt was to solve the (easy) first problem of the Project Euler series (https://projecteuler.net/problem=1)
