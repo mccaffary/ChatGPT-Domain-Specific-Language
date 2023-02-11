@@ -14,15 +14,90 @@ Here, the domain-specific language SIL (Symmetry Integration Language) was selec
 
 Below is a collection of prompts consisting of short examples of SIL code which highlight its functionality. After prompting ChatGPT with the task and providing SIL code samples (see figure below; [full prompt history](https://github.com/mccaffary/ChatGPT-Domain-Specific-Language/blob/main/prompt_library/full_prompt_history.txt) and [SIL code examples](https://github.com/mccaffary/ChatGPT-Domain-Specific-Language/tree/main/images/prompts_) are also in this repo), I asked it to implement a number of mainstream programing tasks in SIL.
 
+In the sections below, I show some of the example SIL code scripts with which the model was prompted (the full set of examples can be found [here](https://github.com/mccaffary/ChatGPT-Domain-Specific-Language/tree/main/prompt_library)) and its attempts to implement various problems in SIL.
+
 <details>
 <summary>Prompt 1 (example SIL code)</summary>
 <br>
 
-- Many ways of doing this; for first product itertion, can use simply similarity metric for company information
-  
-- Collaborative filtering is a good first-pass for this, and an influential recent [paper](https://arxiv.org/abs/1802.05814) shows that VAEs (which I use in my modelling) outperform classic approaches at collaborative filtering (see notebook)
+The first prompt is a 
 
-- Ultimately, could leverage word embeddings/ word-to-vec models, such as those used in my [research](https://snap.stanford.edu/node2vec/)
+```d
+// example of using IMAP IDLE to run rules on new mail
+import imap
+moveMessages(session,ids,target) => if (ids.length > 0) then imap.moveUIDs(session,ids,target) else false
+login = imap.ImapLogin(environment("IMAP_USER"),environment("IMAP_PASS"))
+server = imap.ImapServer("imap.fastmail.com","993")
+session = imap.Session(server,login,true,imap.Options(debugMode:true)) |> imap.openConnection |> imap.login
+
+rules=[ [
+	["INBOX/0receipts",
+	[
+		"FROM OnlineServices@welcome.aexp.com",
+		"FROM interactivebrokers.com",
+	]],
+	["Junk",
+	[
+		"FROM Tapatalk",
+	]],
+	["INBOX/newsletters",
+	[
+		"FROM news@pitchbook.com",
+		"HEADER X-mailer mailgun",
+		"HEADER X-mailer WPMailSMTP/Mailer/mailgun 2.4.0",
+		"HEADER X-mailer nlserver",
+		"FROM hbr.org",
+		"FROM elliottwave.com",
+		"OR FROM cio.com FROM cio.co.uk",
+		"FROM substack.com",
+		"FROM eaglealpha.com",
+		"FROM haaretz.com",
+		"FROM gavekal.com",
+		"FROM go.weka.io",
+		"FROM marketing.weka.io",
+		`HEADER list-unsubscribe ""`,
+		`HEADER list-Id ""`,
+		`HEADER list-Post ""`,
+		`HEADER list-owner""`,
+		`HEADER Precedence bulk`,
+		`HEADER Precedence list`,
+		`HEADER list-bounces ""`,
+		`HEADER list-help ""`,
+		`HEADER List-Unsubscribe ""`,
+		"FROM no-reply",
+	]],
+	["INBOX/notifications",
+	[
+		`KEYWORD "$IsNotification"`,
+		"FROM feedback@slack.com",
+		"FROM donotreply@myhermes.co.uk",
+		"FROM skillcast.com",
+		"FROM reedmac.co.uk",
+		"FROM noreply@uber.com",
+		"FROM uber@uber.com",
+		"FROM do-not-reply@trello.com",
+	]],
+]
+
+runRules(Session,Rules) => Rules
+	|> map(target => [target[0],(target[1] |>map(term => imap.search(Session,term).ids))])
+	|> mapa(set => moveMessages(Session,set[1] |> join,set[0]))
+
+runRulesBox(Session,Rules,Mailbox) => {
+	imap.select(Session,Mailbox)
+	in runRules(Session,Rules)
+}
+
+inboxes=[ "INBOX"]
+result = inboxes |> mapa(inbox => runRulesBox(session,rules,imap.Mailbox(session,inbox)))
+print(result)
+import parallel;
+threadFunction(x) => {
+	imap.idle(session)
+	in inboxes |> mapa(inbox => runRulesBox(session,rules,imap.Mailbox(session,inbox)))
+}
+parallel.runEvents((x)=>false,[threadFunction])
+```
   
 </details>
 
