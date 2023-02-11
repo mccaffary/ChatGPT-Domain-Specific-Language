@@ -111,10 +111,29 @@ Although this script is, indeed, a working implementation of bubblesort, the mod
 <summary>Prompt task 3: Implement a function to compute the median of an array/list</summary>
 <br>
 
-```ruby
-require 'redcarpet'
-markdown = Redcarpet.new("Hello World!")
-puts markdown.to_html
+Next, I prompted the model to write a script for computing the median of a list (generated response below). This was, perhaps, one of the least satisfying responses. Firstly, despite `if/else` statements featuring in the example SIL code with which I prompted the model, the syntax in this generated code is incorrect. Secondly, ChatGPT hallucinates (or assumes) the presence of a module called `math` and a buil-in function `sort` (these are reasonable assumptions, but it does significantly decrease the complexity of the prompted problem).
+
+```d
+// Notably, despite if/else statements featuring in the code prompts used for training, ChatGPT gets the syntax wrong here
+
+import math
+
+// Function to compute the median of a list of integers
+median(numbers) => {
+    // Sort the list of numbers
+    sortedNumbers = sort(numbers)
+
+    // Get the middle index of the sorted list
+    middleIndex = math.floor(len(sortedNumbers) / 2)
+
+    // If the list has an odd number of elements, return the middle element
+    if len(sortedNumbers) % 2 == 1:
+        return sortedNumbers[middleIndex]
+    // Otherwise, return the average of the two middle elements
+    else:
+        return (sortedNumbers[middleIndex - 1] + sortedNumbers[middleIndex]) / 2
+}
+
 ```
   
 </details>
