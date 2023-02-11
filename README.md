@@ -51,7 +51,7 @@ puts markdown.to_html
 </details>
 
 <details>
-<summary>Finding similar companies</summary>
+<summary>Prompt task 1: Implement a simple relational database</summary>
 <br>
 
 ```ruby
