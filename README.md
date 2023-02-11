@@ -272,7 +272,7 @@ print(diffTables(users, orders)) // [{"id": 1, "name": "John Doe", "email": "joh
 </details>
 
 <details>
-<summary>Prompt task 2: Implement bubblsort</summary>
+<summary>Prompt task 2: Implement bubblesort</summary>
 <br>
 
 Implementing sorting algorithms is an archetypal software engineering interview question. Here, I asked ChatGPT to implement [bubblesort](https://en.wikipedia.org/wiki/Bubble_sort) (conceptually the most basic sorting algorithm) in SIL. Below is the response:
