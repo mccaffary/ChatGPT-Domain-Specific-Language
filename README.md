@@ -53,11 +53,29 @@ puts markdown.to_html
 <details>
 <summary>Prompt task 1: Implement a simple relational database</summary>
 <br>
+  
+As a first exercise, I asked the model to implement a very simple relational database in SIL, with basic functionalities such as comparing and printing the difference between two data structures.
 
-```ruby
-require 'redcarpet'
-markdown = Redcarpet.new("Hello World!")
-puts markdown.to_html
+```haskell
+// Here, ChatGPT was prompted to write a a very simple, schematic relational database in SIL
+// This prompt proved too general, perhaps, and after requesting further information, I prompted the model to generate a simple, schematic database with functionalities such as "compare" and "diff" for two or more tables
+
+users = [    {"id": 1, "name": "John Doe", "email": "johndoe@example.com"},    {"id": 2, "name": "Jane Smith", "email": "janesmith@example.com"},    {"id": 3, "name": "Bob Johnson", "email": "bobjohnson@example.com"},]
+
+orders = [    {"id": 1, "user_id": 1, "product": "Widget", "quantity": 2, "price": 19.99},    {"id": 2, "user_id": 2, "product": "Gadget", "quantity": 1, "price": 29.99},    {"id": 3, "user_id": 3, "product": "Thingamajig", "quantity": 3, "price": 39.99},]
+
+// Compare two tables
+compareTables(table1, table2) => {
+    table1 == table2
+}
+
+//Diff two tables
+diffTables(table1, table2) => {
+    table1.filter(i => !table2.includes(i))
+}
+
+print(compareTables(users, users)) // true
+print(diffTables(users, orders)) // [{"id": 1, "name": "John Doe", "email": "johndoe@example.com"}]
 ```
   
 </details>
