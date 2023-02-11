@@ -20,7 +20,7 @@ In the sections below, I show some of the example SIL code scripts with which th
 <summary>Prompt 1 (example SIL code)</summary>
 <br>
 
-The first prompt is a 
+The first prompt is a script to handle some mail server functionality. As such, it differs greatly from the type of problem I will subsequently prompt ChatGPT to solve, but it does illustrate some of the syntax, data structures, and functional aspects of SIL (e.g. `|>`).
 
 ```d
 // example of using IMAP IDLE to run rules on new mail
@@ -81,10 +81,70 @@ parallel.runEvents((x)=>false,[threadFunction])
 <summary>Prompt 2 (example SIL code)</summary>
 <br>
 
-```ruby
-require 'redcarpet'
-markdown = Redcarpet.new("Hello World!")
-puts markdown.to_html
+The second example code prompt similarly aims to highlight some features of this DSL for the model, and introduces some new standard library functions such as `iota` and `fold`.
+
+```d
+import imap
+import imap_config
+import string
+
+// Get the configuration from the environment and command line.
+config = imap_config.getConfig(commandLineArguments)
+
+// -------------------------------------------------------------------------------------------------
+// Some helper functions.
+//
+// Firstly, a function to join an array of strings.
+
+joinFields(flds, sep) => {
+  len(flds) > 0 |> enforce("Cannot join an empty array.")
+  in fold(flds[1:$], (str, fld) => str ~ sep ~ fld, flds[0])
+}
+
+// Secondly, a field formatter which strips the field prefix and pads to a fixed width.
+// E.g., ("From: me@here.com" |> fmtField(20)) == "me@here.com         "
+
+fmtField(field, width) => {
+  pad(str) => iota(width - len(str)) |> fold((a, i) => a ~ " ", str)
+  in field
+    |> string.split(": ")[1:$]
+    |> joinFields(": ")
+    |> pad
+}
+
+// And thirdly, a function which concatenates the headers into a formatted string.
+
+fmtHeaders(outStr, headers) => {
+  outStr ~ "  " ~ joinFields(headers, " | ") ~ "\n"
+}
+
+// -------------------------------------------------------------------------------------------------
+
+// Connect to the inbox.
+creds = imap.ImapLogin(config.user, config.pass)
+server = imap.ImapServer(config.host, config.port)
+session =
+  imap.Session(server, creds)
+  |> imap.openConnection()
+  |> imap.login()
+inbox = imap.Mailbox(session, "INBOX")
+
+// Get the number of messages in the inbox.
+msgCount = imap.status(session, inbox).messages
+
+// Select the default inbox.
+inbox |> imap.examine(session, _)
+
+// Get the headers (date, from and subject) for each message, from oldest to newest, format and
+// print them.
+headers =
+  iota(msgCount)
+    |> map(id => "#" ~ toString(id + 1))
+    |> map(id =>
+         imap.fetchFields(session, id, "date from subject").lines
+           |> map(hdr => fmtField(hdr, 40)))
+    |> fold(fmtHeaders, "INBOX:\n")
+print(headers)
 ```
   
 </details>
@@ -93,11 +153,87 @@ puts markdown.to_html
 <summary>Prompt 3 (example SIL code)</summary>
 <br>
 
-- Many ways of doing this; for first product itertion, can use simply similarity metric for company information
-  
-- Collaborative filtering is a good first-pass for this, and an influential recent [paper](https://arxiv.org/abs/1802.05814) shows that VAEs (which I use in my modelling) outperform classic approaches at collaborative filtering (see notebook)
+The third code sample further illustrates some of the unusual features of this DSL, with the aim that ChatGPT will use these in its own implementations next.
 
-- Ultimately, could leverage word embeddings/ word-to-vec models, such as those used in my [research](https://snap.stanford.edu/node2vec/)
+```d
+// This script will search for emails and match new issue numbers with resolutions to report the
+// number of outstanding alerts.
+
+import imap
+import * from imap.query
+import imap_config
+
+import dates
+import string
+
+// Get the configuration from the environment and command line.
+config = imap_config.getConfig(commandLineArguments)
+
+// Connect to the inbox.
+creds = imap.ImapLogin(config.user, config.pass)
+server = imap.ImapServer(config.host, config.port)
+session =
+  imap.Session(server, creds)
+    |> imap.openConnection()
+    |> imap.login()
+inbox = imap.Mailbox(session, "support")
+
+// Select the default inbox.
+inbox |> imap.examine(session, _)
+
+// These criteria are common for both our searches.
+commonCrit = imap.Query()
+    |> and(from(`robot@example.com`))
+    |> and(sentSince(dates.Date(2020, 5, 13)))
+
+// Get each of the alerts and resolutions from the past week (13-19 May 2020).
+alertMsgIds =
+  imap.search(session, imap.Query(subject("Alert: new issue")) |> and(commonCrit)).ids
+resolutionMsgIds =
+  imap.search(session, imap.Query(subject("Resolution: issue")) |> and(commonCrit)).ids
+
+// A function to get the alert ID from a message subject.
+getAlertId(msgId) => {
+  imap.fetchFields(session, toString(msgId), "subject").lines[0]
+    |> string.split()[$ - 1]
+}
+
+// A function to remove an entry from a table whether it's there or not.
+removeIfExists(tbl, key) => {
+  if find(keys(tbl), key) == [] then
+    tbl
+  else
+    removeEntry(tbl, key)
+}
+
+// Now find those alerts which have no resolution.  Firstly the subject for each alert, get the
+// issue number end and store it in a table.
+allAlertTable = alertMsgIds |> fold((tbl, msgId) => addEntry(tbl, getAlertId(msgId), msgId), {})
+
+// Go through the resolutions and remove their corresponding alerts from the table.
+unresolvedAlertTable =
+  resolutionMsgIds |> fold((tbl, msgId) => removeIfExists(tbl, getAlertId(msgId)), allAlertTable)
+
+// Create a report with the date of the unresolved alerts.
+report =
+  keys(unresolvedAlertTable)
+    |> map(alertId => {
+         msgId = unresolvedAlertTable[alertId] |> toString
+       in [ alertId
+          , imap.fetchFields(session, msgId, "date").lines[0]
+          , imap.fetchText(session, msgId).lines[0]
+          ]
+       })
+    |> fold((outStr, tuple) => {
+         outStr ~ "Issue: " ~ tuple[0] ~ "\n  " ~ tuple[1] ~ "\n  Summary: " ~ tuple[2] ~ "\n"
+       }, "\nUNRESOLVED ISSUES FROM THE PAST 10 DAYS:\n\n")
+
+// Close the session.
+imap.closeConnection(session)
+
+// Print the report last.
+print(report)
+```
   
 </details>
 
