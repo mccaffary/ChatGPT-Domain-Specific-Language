@@ -387,9 +387,60 @@ k_nearest_neighbors(data, point, k) => {
 ```
   
 </details>
+	
 
 <details>
-<summary>Prompt task 5: Solving Project Euler problems in SIL</summary>
+<summary>Prompt task 5: Implement functional operators</summary>
+<br>
+
+One of the interesting features of functional languages is that they can be highly expressive. Here, I prompted ChatGPT to implement the basic functional operators `map`, `filter`, and `reduce` (or `fold` in the context of functional languages). For the first few cases, the model seemed to lose track of the functional aspects of SIL, but could re-implement the code in a more functional manner when prompted.
+	
+```d
+// map
+
+map(fn, list) => {
+    result = []
+    for i in list {
+        result.append(fn(i))
+    }
+    return result
+}
+
+// filter
+
+filter(fn, list) => {
+    result = []
+    for i in list {
+        if (fn(i)) {
+            result.append(i)
+        }
+    }
+    return result
+}
+
+// reduce
+
+reduce(fn, list, initial) => {
+    result = initial
+    for i in list {
+        result = fn(result, i)
+    }
+    return result
+}
+
+// reduce (prompted to use functional operators such as pipe |>, in addition to the 'map' and 'filter' functions defined previously)
+
+reduce(fn, list, initial) => 
+    list |> 
+    filter(fn, _, initial) => 
+    map(fn, _, initial) => 
+    initial
+```
+  
+</details>
+
+<details>
+<summary>Prompt task 6: Solving Project Euler problems in SIL</summary>
 <br>
 
 [Project Euler](https://projecteuler.net/) is a collection of mathematical and programming problems (which I think make [interesting prompts](https://github.com/mccaffary/ChatGPT-Project-Euler) for LLMs). Here, I prompt ChatGPT to solve the first two Project Euler problems using SIL. At this point, ChatGPT's repsonses dteriorated somewhat; neither of these solutions bears much resemblance to either the high-level functionality of SIL nor its exaxct syntax. It might be interesting to provide further SIL code examples at this point and then re-prompt the model to solve these problems.
