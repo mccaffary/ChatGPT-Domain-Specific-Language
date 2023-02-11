@@ -205,10 +205,47 @@ k_nearest_neighbors(data, point, k) => {
 <summary>Prompt task 5: Solving Project Euler problems in SIL</summary>
 <br>
 
-```ruby
-require 'redcarpet'
-markdown = Redcarpet.new("Hello World!")
-puts markdown.to_html
+```d
+// Project Euler problem #1:
+// Here, my prompt was to solve the (easy) first problem of the Project Euler series (https://projecteuler.net/problem=1)
+// Notably, despite if/else statements featuring in the code prompts used for training, ChatGPT gets the syntax wrong here
+
+result = 0
+for i in 1...1000 {
+    if (i % 3 == 0 || i % 5 == 0) {
+        result += i
+    }
+}
+print(result)
+```
+
+```d
+// Project Euler problem #2:
+// This prompt is to solve the second Project Euler problem (https://projecteuler.net/problem=2)
+// The solution proposed by ChatGPT is sensible, but potentially inefficient
+// Notably, despite if/else statements featuring in the code prompts used for training, ChatGPT gets the syntax wrong here
+
+result = 0
+
+fib(n) => {
+    if (n <= 1) {
+        return n
+    }
+    return fib(n-1) + fib(n-2)
+}
+
+for i in 1...100 {
+    val = fib(i)
+    if (val > 4000000) {
+        break
+    }
+    if (val % 2 == 0) {
+        result += val
+    }
+}
+
+print(result)
+
 ```
   
 </details>
