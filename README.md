@@ -54,7 +54,7 @@ puts markdown.to_html
 <summary>Prompt task 1: Implement a simple relational database</summary>
 <br>
   
-As a first exercise, I asked the model to implement a very simple relational database in SIL, with basic functionalities such as comparing and printing the difference between two data structures.
+As a first exercise, I asked the model to implement a very simple relational database in SIL, with basic functionalities such as comparing and printing the difference between two data structure (note that `//` denotes commenting in SIL).
 
 ```haskell
 // Here, ChatGPT was prompted to write a a very simple, schematic relational database in SIL
