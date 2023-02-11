@@ -86,7 +86,7 @@ print(diffTables(users, orders)) // [{"id": 1, "name": "John Doe", "email": "joh
 
 Implementing sorting algorithms is an archetypal software engineering interview question. Here, I asked ChatGPT to implement [bubblesort](https://en.wikipedia.org/wiki/Bubble_sort) (conceptually the most basic sorting algorithm) in SIL. Below is the response:
 
-```haskell
+```d
 bubbleSort(arr) => {
     for i in 1...len(arr) {
         for j in 1...len(arr) - i {
