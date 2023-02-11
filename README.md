@@ -63,7 +63,7 @@ puts markdown.to_html
 </details>
 
 <details>
-<summary>Finding similar companies</summary>
+<summary>Prompt task 2: Implement bubblsort</summary>
 <br>
 
 ```ruby
@@ -75,7 +75,7 @@ puts markdown.to_html
 </details>
 
 <details>
-<summary>Finding similar companies</summary>
+<summary>Prompt task 3: Implement a function to compute the median of an array/list</summary>
 <br>
 
 ```ruby
@@ -87,7 +87,7 @@ puts markdown.to_html
 </details>
 
 <details>
-<summary>Finding similar companies</summary>
+<summary>Prompt task 4: Implement the *k*-nearest neighbours algorithm</summary>
 <br>
 
 ```ruby
@@ -99,19 +99,7 @@ puts markdown.to_html
 </details>
 
 <details>
-<summary>Finding similar companies</summary>
-<br>
-
-```ruby
-require 'redcarpet'
-markdown = Redcarpet.new("Hello World!")
-puts markdown.to_html
-```
-  
-</details>
-
-<details>
-<summary>Finding similar companies</summary>
+<summary>Prompt task 5: Solving Project Euler problems in SIL</summary>
 <br>
 
 ```ruby
